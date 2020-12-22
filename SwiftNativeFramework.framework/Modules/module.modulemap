@@ -1,0 +1,4 @@
+framework module SwiftNativeFramework {
+  header "SwiftNativeFramework-Swift.h"
+  requires objc
+}

@@ -6,6 +6,20 @@
 	objectVersion = 50;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		80B0CC44259239A500E81C15 /* SwiftNative-Universal */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 80B0CC45259239A500E81C15 /* Build configuration list for PBXAggregateTarget "SwiftNative-Universal" */;
+			buildPhases = (
+				80B0CC48259239A900E81C15 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "SwiftNative-Universal";
+			productName = "SwiftNative-Universal";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		80B0C1B42591EAB400E81C15 /* HelperFramefork.h in Headers */ = {isa = PBXBuildFile; fileRef = 80B0C1A62591EAB400E81C15 /* HelperFramefork.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		80B0C1CD2591EC0D00E81C15 /* BaseTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B0C1C82591EC0D00E81C15 /* BaseTabBarController.swift */; };
@@ -114,6 +128,7 @@
 			children = (
 				80B0C1A52591EAB400E81C15 /* HelperFramefork */,
 				80B0C1A42591EAB400E81C15 /* Products */,
+				80B0C68B259229AC00E81C15 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -231,6 +246,13 @@
 			path = Navigation;
 			sourceTree = "<group>";
 		};
+		80B0C68B259229AC00E81C15 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -275,6 +297,9 @@
 					80B0C1A22591EAB400E81C15 = {
 						CreatedOnToolsVersion = 12.3;
 					};
+					80B0CC44259239A500E81C15 = {
+						CreatedOnToolsVersion = 12.3;
+					};
 				};
 			};
 			buildConfigurationList = 80B0C19D2591EAB400E81C15 /* Build configuration list for PBXProject "SwiftNativeFramework" */;
@@ -291,6 +316,7 @@
 			projectRoot = "";
 			targets = (
 				80B0C1A22591EAB400E81C15 /* SwiftNativeFramework */,
+				80B0CC44259239A500E81C15 /* SwiftNative-Universal */,
 			);
 		};
 /* End PBXProject section */
@@ -304,6 +330,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		80B0CC48259239A900E81C15 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/sh\n\nUNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal\n\n# make sure the output directory exists\nmkdir -p \"${UNIVERSAL_OUTPUTFOLDER}\"\n\n# Step 1. Build Device and Simulator versions\nxcodebuild -target \"${PROJECT_NAME}\" ONLY_ACTIVE_ARCH=NO -configuration ${CONFIGURATION} -sdk iphoneos  BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\nxcodebuild -target \"${PROJECT_NAME}\" -configuration ${CONFIGURATION} -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" clean build\n\n# Step 2. Copy the framework structure (from iphoneos build) to the universal folder\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework\" \"${UNIVERSAL_OUTPUTFOLDER}/\"\n\n# Step 3. Copy Swift modules from iphonesimulator build (if it exists) to the copied framework directory\nSIMULATOR_SWIFT_MODULES_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/Modules/${PROJECT_NAME}.swiftmodule/.\"\nif [ -d \"${SIMULATOR_SWIFT_MODULES_DIR}\" ]; then\ncp -R \"${SIMULATOR_SWIFT_MODULES_DIR}\" \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/Modules/${PROJECT_NAME}.swiftmodule\"\nfi\n\n# Step 4. Create universal binary file using lipo and place the combined executable in the copied framework directory\nlipo -create -output \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/${PROJECT_NAME}\" \"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework/${PROJECT_NAME}\"\n\n# Step 5. Convenience step to copy the framework to the project's directory\ncp -R \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework\" \"${PROJECT_DIR}\"\n\n# Step 6. Convenience step to open the project's directory in Finder\nopen \"${PROJECT_DIR}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		80B0C19F2591EAB400E81C15 /* Sources */ = {
@@ -533,6 +579,22 @@
 			};
 			name = Release;
 		};
+		80B0CC46259239A500E81C15 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		80B0CC47259239A500E81C15 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -550,6 +612,15 @@
 			buildConfigurations = (
 				80B0C1B82591EAB400E81C15 /* Debug */,
 				80B0C1B92591EAB400E81C15 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		80B0CC45259239A500E81C15 /* Build configuration list for PBXAggregateTarget "SwiftNative-Universal" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				80B0CC46259239A500E81C15 /* Debug */,
+				80B0CC47259239A500E81C15 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
