@@ -83,20 +83,6 @@ extension UIView {
         
     }
     
-    func animHide(){
-        UIView.animate(withDuration: 0.35, delay: 0, options: [.curveLinear],
-                       animations: {
-                        self.center.y += self.bounds.height
-                        self.alpha = 0
-                        self.transform = CGAffineTransform.identity
-                        self.layoutIfNeeded()
-                        
-                       },  completion: {(_ completed: Bool) -> Void in
-                        //self.isHidden = true
-                       })
-    }
-    
-    
     func saveAsImage()-> UIImage? {
         UIGraphicsBeginImageContext(self.bounds.size)
         guard let context = UIGraphicsGetCurrentContext() else { return nil }
@@ -133,5 +119,66 @@ extension UIView {
         
         layer.position = position
         layer.anchorPoint = point
+    }
+    
+    
+    func fixInView(_ container: UIView!) -> Void{
+        self.backgroundColor = .clear
+        self.translatesAutoresizingMaskIntoConstraints = false;
+        self.frame = container.frame;
+        container.addSubview(self);
+        NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .equal, toItem: container, attribute: .leading, multiplier: 1.0, constant: 0).isActive = true
+        NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: container, attribute: .trailing, multiplier: 1.0, constant: 0).isActive = true
+        NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: container, attribute: .top, multiplier: 1.0, constant: 0).isActive = true
+        NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: container, attribute: .bottom, multiplier: 1.0, constant: 0).isActive = true
+    }
+    
+    func roundCorners(_ corners: UIRectCorner, radius: CGFloat) {
+        if #available(iOS 11.0, *) {
+            clipsToBounds = true
+            layer.cornerRadius = radius
+            layer.maskedCorners = CACornerMask(rawValue: corners.rawValue)
+        } else {
+            let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+            let mask = CAShapeLayer()
+            mask.path = path.cgPath
+            layer.mask = mask
+        }
+    }
+    
+    func animHide(){
+        UIView.animate(withDuration: 0.5, delay: 0, options: [.curveLinear],
+                       animations: {
+                        self.center.y += self.bounds.height
+                        self.alpha = 0
+                        self.transform = CGAffineTransform.identity
+                        self.layoutIfNeeded()
+                        
+                       },  completion: {(_ completed: Bool) -> Void in
+                        self.isHidden = true
+                        self.transform = CGAffineTransform.identity
+                       })
+    }
+    
+    func animBottom() {
+        let transition1: CATransition = CATransition()
+        let timeFunc1 : CAMediaTimingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        transition1.duration = 1.0
+        transition1.timingFunction = timeFunc1
+        transition1.type = CATransitionType.push
+        transition1.subtype = CATransitionSubtype.fromBottom
+        self.isHidden = true
+        self.layer.add(transition1, forKey: kCATransition)
+    }
+    
+    func animTop(){
+        let transition1: CATransition = CATransition()
+        let timeFunc1 : CAMediaTimingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        transition1.duration = 1.0
+        transition1.timingFunction = timeFunc1
+        transition1.type = CATransitionType.push
+        transition1.subtype = CATransitionSubtype.fromTop
+        self.isHidden = false
+        self.layer.add(transition1, forKey: kCATransition)
     }
 }

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "80B0C1A22591EAB400E81C15"
-               BuildableName = "SwiftNativeFramework.framework"
-               BlueprintName = "SwiftNativeFramework"
-               ReferencedContainer = "container:SwiftNativeFramework.xcodeproj">
+               BuildableName = "CoreSwift.framework"
+               BlueprintName = "CoreSwift"
+               ReferencedContainer = "container:CoreSwift.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -51,9 +51,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "80B0C1A22591EAB400E81C15"
-            BuildableName = "SwiftNativeFramework.framework"
-            BlueprintName = "SwiftNativeFramework"
-            ReferencedContainer = "container:SwiftNativeFramework.xcodeproj">
+            BuildableName = "CoreSwift.framework"
+            BlueprintName = "CoreSwift"
+            ReferencedContainer = "container:CoreSwift.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

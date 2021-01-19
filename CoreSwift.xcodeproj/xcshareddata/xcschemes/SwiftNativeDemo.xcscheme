@@ -30,7 +30,7 @@
             BlueprintIdentifier = "80B0C6742592296500E81C15"
             BuildableName = "SwiftNativeDemo.app"
             BlueprintName = "SwiftNativeDemo"
-            ReferencedContainer = "container:SwiftNativeFramework.xcodeproj">
+            ReferencedContainer = "container:CoreSwift.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </LaunchAction>

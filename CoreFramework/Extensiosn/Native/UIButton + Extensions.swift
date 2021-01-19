@@ -26,4 +26,12 @@ extension UIButton {
                        }, completion: nil)
         self.isHidden = false
     }
+    
+    func addShadow(){
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowRadius = 3.0
+        self.layer.shadowOpacity = 1.0
+        self.layer.shadowOffset = CGSize(width: 5, height: 5)
+        self.layer.masksToBounds = false
+    }
 }
